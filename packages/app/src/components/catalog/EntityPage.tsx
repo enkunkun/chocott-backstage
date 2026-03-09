@@ -61,7 +61,8 @@ import {
 import {
   EntityGrafanaDashboardsCard,
   EntityGrafanaAlertsCard,
-  isGrafanaAvailable,
+  isDashboardSelectorAvailable,
+  isAlertSelectorAvailable,
 } from '@backstage-community/plugin-grafana';
 
 import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
@@ -149,10 +150,15 @@ const overviewContent = (
     </EntitySwitch>
 
     <EntitySwitch>
-      <EntitySwitch.Case if={isGrafanaAvailable}>
+      <EntitySwitch.Case if={isDashboardSelectorAvailable}>
         <Grid item md={6} xs={12}>
           <EntityGrafanaDashboardsCard />
         </Grid>
+      </EntitySwitch.Case>
+    </EntitySwitch>
+
+    <EntitySwitch>
+      <EntitySwitch.Case if={isAlertSelectorAvailable}>
         <Grid item md={6} xs={12}>
           <EntityGrafanaAlertsCard />
         </Grid>
