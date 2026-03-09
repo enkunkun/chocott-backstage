@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@backstage-community/plugin-github-actions": "^0.20.0",
+    "@backstage-community/plugin-grafana": "^0.15.0",
     "@backstage-community/plugin-tech-radar": "^1.15.0",
     "@backstage/app-defaults": "^1.7.5",
     "@backstage/catalog-model": "^1.7.6",

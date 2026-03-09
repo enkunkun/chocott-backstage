@@ -58,6 +58,11 @@ import {
   EntityGithubPullRequestsOverviewCard,
   isGithubPullRequestsAvailable
 } from '@roadiehq/backstage-plugin-github-pull-requests';
+import {
+  EntityGrafanaDashboardsCard,
+  EntityGrafanaAlertsCard,
+  isGrafanaAvailable,
+} from '@backstage-community/plugin-grafana';
 
 import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
 import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
@@ -139,8 +144,19 @@ const overviewContent = (
       <EntitySwitch.Case if={isGithubPullRequestsAvailable}>
         <Grid item md={6} xs={12}>
           <EntityGithubPullRequestsOverviewCard />
-        </Grid>    
-      </EntitySwitch.Case>  
+        </Grid>
+      </EntitySwitch.Case>
+    </EntitySwitch>
+
+    <EntitySwitch>
+      <EntitySwitch.Case if={isGrafanaAvailable}>
+        <Grid item md={6} xs={12}>
+          <EntityGrafanaDashboardsCard />
+        </Grid>
+        <Grid item md={6} xs={12}>
+          <EntityGrafanaAlertsCard />
+        </Grid>
+      </EntitySwitch.Case>
     </EntitySwitch>
 
     <Grid item md={4} xs={12}>
