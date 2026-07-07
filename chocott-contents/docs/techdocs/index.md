@@ -1,7 +1,7 @@
 # TechDocs
 
 TechDocsはGitHubリポジトリ上で記載されたMarkdownファイルをHTMLに変換し、Backstage上で表示する機能です。
-TechDocsは内部で [mkdocs](https://www.mkdocs.org/) というツールを利用しています。このため、ローカルPC上でbackstageを実行する場合には mkdocs ツールをあらかじめインストールしておかなければなりません。
+TechDocsは内部で [mkdocs](https://www.mkdocs.org/) というツールを利用しています。このため、ローカルPC上でbackstageを実行する場合にはmkdocsツールをあらかじめインストールしておかなければなりません。
 
 ## mkdocsとmkdocs pluginのインストール
 
@@ -10,13 +10,13 @@ TechDocsは内部で [mkdocs](https://www.mkdocs.org/) というツールを利�
 mkdocsはpythonで実装したプログラムです。このため事前に以下のものをインストールする必要があります。
 
 - [Python](https://www.python.org/)
-- [pip (Python pakcage manager)](https://pip.readthedocs.io/en/stable/installing/)
+- [pip (Python package manager)](https://pip.readthedocs.io/en/stable/installing/)
 
 [mkdocs installation](https://www.mkdocs.org/user-guide/installation/) などに沿ってこれらのツールをインストールしてください。
 
 ### mkdocsとmkdocs pluginのインストール
 
-pipコマンド（または brewコマンドなどを使っても構いません）でmkdocsをインストールしてください。
+pipコマンド（またはbrewコマンドなどを使っても構いません）でmkdocsをインストールしてください。
 
 ```bash
 pip install mkdocs

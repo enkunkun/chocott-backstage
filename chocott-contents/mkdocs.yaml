@@ -2,16 +2,31 @@ site_name: chocott-backstage
 docs_dir: docs
 nav:
   - Home: index.md
-  - Quick Start: quick-start/index.md
+  - Quick Start:
+      - はじめに: quick-start/index.md
+      - パーソナルアカウントで利用する場合: quick-start/personal.md
+      - Organizationアカウントで利用する場合: quick-start/organization.md
   - 機能詳細:
-      - ユーザー認証: authentication/index.md
+      - ユーザー認証:
+          - 概要: authentication/index.md
+          - GitHub App (パーソナル): authentication/githubapp/personal/index.md
+          - GitHub App (Organization): authentication/githubapp/organization/index.md
       - アクセス承認: authorization/index.md
-      - Integration: integration/index.md
+      - Integration:
+          - 概要: integration/index.md
+          - GitHub PAT: integration/githubpat/index.md
       - TechDocs: techdocs/index.md
       - Plugin導入による機能拡張: plugins/index.md
       - Database: database/index.md
-  - カタログ情報:
+  - コア機能:
       - ソフトウェアカタログ: catalogs/index.md
-      - ソフトウェアテンプレート: software-templates/index.md
+      - ソフトウェアテンプレート:
+          - 概要: software-templates/index.md
+          - テンプレート登録手順: software-templates/register-software-template.md
+          - テンプレートの書き方: software-templates/writing-software-template.md
+  - ソフトウェアテンプレートのサンプル:
+      - Express API × TypeScriptテンプレート: software-templates/template-express-api-typescript.md
+      - Terraform Azureテンプレート: software-templates/template-azure-terraform.md
+      - catalog-info追加PRテンプレート: software-templates/template-register-software-catalog.md
 plugins:
   - techdocs-core

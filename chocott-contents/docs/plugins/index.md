@@ -5,13 +5,13 @@ Pluginは [Backstageのサイト](https://backstage.io/plugins) で公開され�
 
 ![GitHub Pull Requests Plugin](backstage-plugin-github-pr.png)
 
-Pluginの導入方法は比較的簡単です。ここでは Roadie社が [Backstageのサイト](https://backstage.io/plugins) で公開している [GitHub Pull Requests Plugin](https://roadie.io/backstage/plugins/github-pull-requests/)を例にその導入方法を見ていきます。
+Pluginの導入方法は比較的簡単です。ここではRoadie社が [Backstageのサイト](https://backstage.io/plugins) で公開している [GitHub Pull Requests Plugin](https://roadie.io/backstage/plugins/github-pull-requests/)を例にその導入方法を見ていきます。
 
 ## GitHub Pull Requests Pluginの導入
 
 (Pluginの導入方法は、各PluginのREADME等で紹介されている内容をそのまま実行すれば可能です。)
 
-まず Plugin をインストールします。今回のPluginはfrontend用のパッケージだけですが、Pluginによってはfrontend用、backend用など複数のパッケージをインストールしなければならないものもあります。それぞれのPluginのREADME等をご確認ください。
+まずPluginをインストールします。今回のPluginはfrontend用のパッケージだけですが、Pluginによってはfrontend用、backend用など複数のパッケージをインストールしなければならないものもあります。それぞれのPluginのREADME等をご確認ください。
 
 インストールは以下のようなコマンドを実行します。
 
@@ -103,4 +103,3 @@ Overviewには以下のような表示が追加されます。
 また 「Pull requests」 というタブにPull requestsの一覧が表示されます。
 
 ![Pull request tab](pr-plugin-tab.png)
-

@@ -9,14 +9,12 @@
 場合に必要となるものです。新バックエンドシステムをご利用の場合はコードを除いたコンフィグレーションのみ
 実施してください。
 
-GitHub Appを組織アカウントに登録した場合、ユーザー・グループ情報はGitHubのユーザー・チームの情報と同期することができます。以下にに沿って、同期機能を有効にしてください。
-
+GitHub AppをOrganization（組織）アカウントに登録した場合、ユーザー・グループ情報はGitHubのユーザー・チームの情報と同期することができます。以下に沿って、同期機能を有効にしてください。
 
 ## 承認処理の有効化
 
 Backstageのコードを作成した直後は以下のようになっています。
 参考 : [Backstage document](https://backstage.io/docs/auth/identity-resolver)
-
 
 ```typescript
 // File: packages/backend/src/plugins/auth.ts
@@ -83,7 +81,7 @@ GitHub AuthenticationはGitHubに登録されたユーザーかどうかを確�
 
 上記の修正を行いサインインを実行すると以下のように、「User not found」になります。これはユーザーがBackstage側に登録されていないからです。
 
-![Siginin, user not found](signin-user-not-found.png)
+![Signin, user not found](signin-user-not-found.png)
 
 通常、ユーザー情報はGitHubの組織情報からインポートします。参考資料: [GitHub Organization Data](https://backstage.io/docs/integrations/github/org)
 
@@ -93,8 +91,7 @@ GitHub AuthenticationはGitHubに登録されたユーザーかどうかを確�
 
 組織データのインポートは [@backstage/plugin-catalog-backend-module-github] Pluginを使用します。
 インポートはBackstageからGitHubに対して定期的なfetchを行う方法と、GitHub Webhookによりインポートとする方法があります。
-ここでは定期的なfetchを行う方法について記載いします（Webhookの追加方法については [Backstage document](https://backstage.io/docs/integrations/github/org/#installation-with-events-support) をご確認ください）
-
+ここでは定期的なfetchを行う方法について記載します（Webhookの追加方法については [Backstage document](https://backstage.io/docs/integrations/github/org/#installation-with-events-support) をご確認ください）
 
 ```typescript
 // File: packages/backend/src/plugins/catalog.ts
@@ -128,7 +125,6 @@ export default async function createPlugin(
 
 ```
 
-
 chocott-backstageでは、コンフィグレーションファイルでorgsの内容を指定できるように修正しています。
 
 ```yaml
@@ -141,7 +137,7 @@ catalog:
 
 ```
 
-上記の内容を修正・追加することで GitHubから組織情報を取得するようになります。（上記の例では1時間ごとにデータを取得します）
+上記の内容を修正・追加することでGitHubから組織情報を取得するようになります。（上記の例では1時間ごとにデータを取得します）
 
 あらためてサインインをしてみると、今度は正常にアクセスできると思います。
 
@@ -149,7 +145,7 @@ catalog:
 
 ## パーソナルアカウントにGitHub Appを登録した場合
 
-パーソナルアカウントにGitHub Appを登録した場合には、ユーザー・チーム情報をBackstageに取り込むことができませんコンフィグレーション(`$TOP/app-config.local.yaml` や `chocott-contents/deploy/app-config.chocott.yaml`)のcatalog.providers.gitHubOrgの項目をコメントアウトしてください。
+パーソナルアカウントにGitHub Appを登録した場合には、ユーザー・チーム情報をBackstageに取り込むことができません。コンフィグレーション(`$TOP/app-config.local.yaml` や `chocott-contents/deploy/app-config.chocott.yaml`)のcatalog.providers.githubOrgの項目をコメントアウトしてください。
 
 ```yaml
 catalog:

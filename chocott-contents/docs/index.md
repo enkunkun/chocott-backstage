@@ -2,11 +2,11 @@
 
 ## システム構成
 
-[Backstage](https://backstage.io/) は [Plugin](https://backstage.io/plugins) を組み込むことで様々な外部システムと連携することができます。 chocott-backstageでは GitHubと連携するPluginをいくつか組み込んであります。
+[Backstage](https://backstage.io/) は [Plugin](https://backstage.io/plugins) を組み込むことで様々な外部システムと連携することができます。 chocott-backstageではGitHubと連携するPluginをいくつか組み込んであります。
 
 chocott-backstageのシステム構成を以下に示します。
 
-![sytem-overview](./system-overview.drawio.png)
+![system-overview](./system-overview.drawio.png)
 
 ## 始め方
 
@@ -21,16 +21,21 @@ chocott-backstageの利用方法は [Quick start](./quick-start/index.md) をご
 - [Plugins](./plugins/index.md)
 - [Database](./database/index.md)
 
-## カタログ情報
+## コア機能
 
 - [ソフトウェアカタログ](./catalogs/index.md)
 - [ソフトウェアテンプレート](./software-templates/index.md)
 
+## ソフトウェアテンプレートのサンプル
+
+- [Express API × TypeScriptテンプレート](./software-templates/template-express-api-typescript.md)
+- [catalog-info.yamlを追加するPull Requestを作成するテンプレート](./software-templates/template-register-software-catalog.md)
+
 ## 独自コンテンツ
 
-本リポジトリは基本的に backstageのアプリケーション生成コマンドの出力結果をベースとし、いくつかコードに修正を加えたものとなっています。
+本リポジトリは基本的にbackstageのアプリケーション生成コマンドの出力結果をベースとし、いくつかコードに修正を加えたものとなっています。
 以下の部分は独自に追加しております。
 
 - ${TOP}/LICENSE
-- $(TOP)/.github
-- $(TOP)/chocott-contenets
+- ${TOP}/.github
+- ${TOP}/chocott-contents
