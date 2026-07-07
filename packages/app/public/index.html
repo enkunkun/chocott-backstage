@@ -2,6 +2,54 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <script>
+      // Polyfill crypto.randomUUID for insecure (HTTP) contexts.
+      // Backstage's frontend calls crypto.randomUUID() during startup, but
+      // browsers only expose it in secure contexts (HTTPS or localhost).
+      // When this app is served over plain HTTP on a private network,
+      // randomUUID is undefined and the app crashes to a blank page.
+      // Provide a getRandomValues-based fallback (getRandomValues IS
+      // available in insecure contexts).
+      (function () {
+        var c = window.crypto || window.msCrypto;
+        if (
+          c &&
+          typeof c.randomUUID !== 'function' &&
+          typeof c.getRandomValues === 'function'
+        ) {
+          var hex = [];
+          for (var i = 0; i < 256; i++) {
+            hex[i] = (i + 0x100).toString(16).slice(1);
+          }
+          var randomUUID = function randomUUID() {
+            var b = c.getRandomValues(new Uint8Array(16));
+            b[6] = (b[6] & 0x0f) | 0x40; // version 4
+            b[8] = (b[8] & 0x3f) | 0x80; // variant 10
+            return (
+              hex[b[0]] + hex[b[1]] + hex[b[2]] + hex[b[3]] + '-' +
+              hex[b[4]] + hex[b[5]] + '-' +
+              hex[b[6]] + hex[b[7]] + '-' +
+              hex[b[8]] + hex[b[9]] + '-' +
+              hex[b[10]] + hex[b[11]] + hex[b[12]] +
+              hex[b[13]] + hex[b[14]] + hex[b[15]]
+            );
+          };
+          try {
+            Object.defineProperty(c, 'randomUUID', {
+              value: randomUUID,
+              configurable: true,
+              writable: true,
+            });
+          } catch (e) {
+            try {
+              c.randomUUID = randomUUID;
+            } catch (e2) {
+              /* ignore */
+            }
+          }
+        }
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <meta
