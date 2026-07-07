@@ -1,0 +1,57 @@
+# Example entities for the custom AIContext kind.
+# See https://github.com/backstage/backstage/issues/33575 and
+# docs/specs/aicontext-kind.md
+---
+apiVersion: backstage.io/v1alpha1
+kind: AIContext
+metadata:
+  name: frontend-design
+  description: Skill for creating production-grade frontend interfaces
+  annotations:
+    backstage.io/source-location: url:https://github.com/example-org/ai-skills/tree/main/frontend-design/
+spec:
+  type: skill
+  lifecycle: experimental
+  owner: guests
+  visibility: public
+  disciplines:
+    - web
+  categories:
+    - framework
+  agents:
+    - claude-code
+  allowedTools:
+    - Read
+    - Edit
+    - Grep
+---
+apiVersion: backstage.io/v1alpha1
+kind: AIContext
+metadata:
+  name: use-internal-design-system
+  description: Agents must use the internal design system components instead of raw HTML or third-party UI libraries
+  annotations:
+    backstage.io/source-location: url:https://github.com/example-org/ai-rules/blob/main/use-internal-design-system.md
+spec:
+  type: rule
+  lifecycle: experimental
+  owner: guests
+  visibility: public
+  disciplines:
+    - web
+  category: framework
+  ruleType: always
+  rationale: Ensures visual consistency and accessibility compliance across all product surfaces by using pre-approved, tested components.
+  activation:
+    strategy: file_match
+    languages:
+      - typescript
+      - javascript
+    fileGlobs:
+      - "**/*.tsx"
+      - "**/*.jsx"
+  sources:
+    - type: docs
+      url: https://design-system.example.com/getting-started
+    - type: example
+      url: https://github.com/example-org/design-system/tree/main/examples

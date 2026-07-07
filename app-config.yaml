@@ -86,11 +86,15 @@ catalog:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
   rules:
-    - allow: [Component, System, API, Resource, Location]
+    - allow: [Component, System, API, Resource, Location, AIContext]
   locations:
     # Local example data, file locations are relative to the backend process, typically `packages/backend`
     - type: file
       target: ../../examples/entities.yaml
+
+    # Custom AIContext kind examples (AI agent rules / skills)
+    - type: file
+      target: ../../examples/aicontext.yaml
 
     # Local example template
     - type: file

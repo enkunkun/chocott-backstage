@@ -47,6 +47,9 @@ backend.add(import('@internal/backstage-plugin-auth-backend-module-github-as-gue
 backend.add(import('@backstage/plugin-catalog-backend'));
 backend.add(import('@backstage/plugin-catalog-backend-module-github'));
 backend.add(import('@backstage/plugin-catalog-backend-module-scaffolder-entity-model'));
+// カスタム kind: AIContext（AI エージェントの rules / skills をカタログ管理する）
+// See https://github.com/backstage/backstage/issues/33575
+backend.add(import('@internal/backstage-plugin-catalog-backend-module-aicontext'));
 
 // See https://backstage.io/docs/features/software-catalog/configuration#subscribing-to-catalog-errors
 backend.add(import('@backstage/plugin-catalog-backend-module-logs'));
