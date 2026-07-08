@@ -29,12 +29,32 @@ export type AIContextBaseSpecV1alpha1 = {
   owner: string;
   /** Defaults to 'public'. */
   visibility?: 'public' | 'private' | 'restricted';
+  /**
+   * Provenance for imported / vendored context. Absent means first-party
+   * (self-authored). Present means it originates from a plugin or marketplace.
+   */
+  source?: AIContextSourceV1alpha1;
+};
+
+/** Where an imported AIContext comes from. */
+export type AIContextSourceV1alpha1 = {
+  /** Marketplace / registry name, e.g. 'anthropic-agent-skills', 'kuu-marketplace'. */
+  registry: string;
+  /** Plugin bundling this context, e.g. 'example-skills'. */
+  plugin?: string;
+  /** Pinned version or git sha. */
+  version?: string;
+  /** Upstream URL. */
+  url?: string;
+  /** Whether currently installed (active) vs merely available in a marketplace. */
+  installed?: boolean;
 };
 
 /** Discriminated union on `type`. Extend as new types are added. */
 export type AIContextTypedSpecV1alpha1 =
   | SkillSpecV1alpha1
-  | RuleSpecV1alpha1;
+  | RuleSpecV1alpha1
+  | CommandSpecV1alpha1;
 
 export type SkillSpecV1alpha1 = {
   type: 'skill';
@@ -82,6 +102,22 @@ export type RuleSpecV1alpha1 = {
   }>;
 };
 
+export type CommandSpecV1alpha1 = {
+  type: 'command';
+  /** The slash invocation, e.g. '/dig'. */
+  invocation: string;
+  /** Freeform disciplines, e.g. 'backend', 'web'. */
+  disciplines?: string[];
+  /** Freeform categories, e.g. 'planning', 'git'. */
+  categories?: string[];
+  /** AI tools this command is designed for, e.g. 'claude-code'. */
+  agents?: string[];
+  /** Use cases this command addresses. */
+  usecases?: string[];
+  /** Entity references to other AIContexts this command depends on. */
+  dependsOn?: string[];
+};
+
 const stringArray = {
   type: 'array',
   items: { type: 'string', minLength: 1 },
@@ -111,7 +147,7 @@ export const aiContextEntityV1alpha1Schema = {
           properties: {
             type: {
               type: 'string',
-              enum: ['skill', 'rule'],
+              enum: ['skill', 'rule', 'command'],
               examples: ['skill'],
             },
             lifecycle: {
@@ -127,6 +163,17 @@ export const aiContextEntityV1alpha1Schema = {
             visibility: {
               type: 'string',
               enum: ['public', 'private', 'restricted'],
+            },
+            source: {
+              type: 'object',
+              required: ['registry'],
+              properties: {
+                registry: { type: 'string', minLength: 1 },
+                plugin: { type: 'string', minLength: 1 },
+                version: { type: 'string', minLength: 1 },
+                url: { type: 'string', minLength: 1 },
+                installed: { type: 'boolean' },
+              },
             },
           },
           allOf: [
@@ -188,6 +235,27 @@ export const aiContextEntityV1alpha1Schema = {
                       },
                     },
                   },
+                },
+              },
+            },
+            {
+              if: {
+                properties: { type: { const: 'command' } },
+                required: ['type'],
+              },
+              then: {
+                required: ['invocation'],
+                properties: {
+                  invocation: {
+                    type: 'string',
+                    minLength: 1,
+                    examples: ['/dig', '/grafana'],
+                  },
+                  disciplines: stringArray,
+                  categories: stringArray,
+                  agents: stringArray,
+                  usecases: stringArray,
+                  dependsOn: stringArray,
                 },
               },
             },

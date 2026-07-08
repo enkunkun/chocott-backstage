@@ -12,9 +12,16 @@ describe('examples/aicontext.yaml', () => {
     .map(doc => doc.toJS() as Entity)
     .filter(Boolean);
 
-  it('少なくとも skill と rule の 2 エンティティを含む', () => {
+  it('少なくとも skill / rule / command の 3 タイプを含む', () => {
     const types = docs.map(d => (d.spec as { type?: string })?.type);
-    expect(types).toEqual(expect.arrayContaining(['skill', 'rule']));
+    expect(types).toEqual(expect.arrayContaining(['skill', 'rule', 'command']));
+  });
+
+  it('source 付きの外部インポート例を含む', () => {
+    const hasSource = docs.some(
+      d => (d.spec as { source?: unknown })?.source !== undefined,
+    );
+    expect(hasSource).toBe(true);
   });
 
   it.each(docs.map(d => [d.metadata?.name, d] as const))(

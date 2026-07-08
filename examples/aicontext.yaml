@@ -55,3 +55,47 @@ spec:
       url: https://design-system.example.com/getting-started
     - type: example
       url: https://github.com/example-org/design-system/tree/main/examples
+---
+apiVersion: backstage.io/v1alpha1
+kind: AIContext
+metadata:
+  name: dig
+  description: Slash command that digs into ambiguous plan points with structured questions
+  annotations:
+    backstage.io/source-location: url:https://github.com/example-org/ai-commands/blob/main/dig.md
+spec:
+  type: command
+  lifecycle: experimental
+  owner: guests
+  visibility: public
+  invocation: /dig
+  categories:
+    - planning
+  agents:
+    - claude-code
+  usecases:
+    - clarification
+  dependsOn:
+    - aicontext:default/tdd
+---
+apiVersion: backstage.io/v1alpha1
+kind: AIContext
+metadata:
+  name: pdf
+  description: Imported skill for reading, editing, and creating PDF files
+  annotations:
+    backstage.io/source-location: url:https://github.com/anthropics/skills/tree/main/skills/pdf/
+spec:
+  type: skill
+  lifecycle: production
+  owner: guests
+  visibility: public
+  source:
+    registry: anthropic-agent-skills
+    plugin: example-skills
+    url: https://github.com/anthropics/skills
+    installed: true
+  disciplines:
+    - documents
+  usecases:
+    - document-processing

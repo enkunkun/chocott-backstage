@@ -15,10 +15,12 @@ export const AIContextSpecCard = () => {
     ...details
   } = (entity.spec ?? {}) as { type?: string } & Record<string, unknown>;
 
-  const title =
-    type === 'rule' ? 'Rule details'
-    : type === 'skill' ? 'Skill details'
-    : 'AIContext details';
+  const titleByType: Record<string, string> = {
+    rule: 'Rule details',
+    skill: 'Skill details',
+    command: 'Command details',
+  };
+  const title = (type && titleByType[type]) || 'AIContext details';
 
   return (
     <InfoCard title={title}>

@@ -122,6 +122,41 @@ describe('AIContextEntitiesProcessor', () => {
       });
     });
 
+    it('command の spec.dependsOn から dependsOn / dependencyOf relations を張る', async () => {
+      const entity: Entity = {
+        apiVersion: 'backstage.io/v1alpha1',
+        kind: 'AIContext',
+        metadata: { name: 'my-command', namespace: 'default' },
+        spec: {
+          type: 'command',
+          lifecycle: 'production',
+          owner: 'guest',
+          invocation: '/my-command',
+          dependsOn: ['tdd'],
+        },
+      };
+      const emit = jest.fn();
+
+      await processor.postProcessEntity(entity, location, emit);
+
+      expect(emit).toHaveBeenCalledWith({
+        type: 'relation',
+        relation: {
+          type: RELATION_DEPENDS_ON,
+          source: { kind: 'AIContext', namespace: 'default', name: 'my-command' },
+          target: { kind: 'aicontext', namespace: 'default', name: 'tdd' },
+        },
+      });
+      expect(emit).toHaveBeenCalledWith({
+        type: 'relation',
+        relation: {
+          type: RELATION_DEPENDENCY_OF,
+          source: { kind: 'aicontext', namespace: 'default', name: 'tdd' },
+          target: { kind: 'AIContext', namespace: 'default', name: 'my-command' },
+        },
+      });
+    });
+
     it('他 kind のエンティティは素通しで relation を emit しない', async () => {
       const entity: Entity = {
         apiVersion: 'backstage.io/v1alpha1',

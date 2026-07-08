@@ -54,6 +54,46 @@ const validRule: Entity = {
   },
 };
 
+const validSkillWithSource: Entity = {
+  apiVersion: 'backstage.io/v1alpha1',
+  kind: 'AIContext',
+  metadata: {
+    name: 'pdf',
+    description: 'Imported skill from the anthropic example-skills plugin',
+  },
+  spec: {
+    type: 'skill',
+    lifecycle: 'production',
+    owner: 'guest',
+    source: {
+      registry: 'anthropic-agent-skills',
+      plugin: 'example-skills',
+      version: '9d2f1ae18723',
+      url: 'https://github.com/anthropics/skills',
+      installed: true,
+    },
+  },
+};
+
+const validCommand: Entity = {
+  apiVersion: 'backstage.io/v1alpha1',
+  kind: 'AIContext',
+  metadata: {
+    name: 'dig',
+    description: 'Slash command that digs into ambiguous plan points',
+  },
+  spec: {
+    type: 'command',
+    lifecycle: 'production',
+    owner: 'guest',
+    invocation: '/dig',
+    categories: ['planning'],
+    agents: ['claude-code'],
+    usecases: ['clarification'],
+    dependsOn: ['aicontext:default/tdd'],
+  },
+};
+
 // deep clone + spec mutation helper
 function withSpec(entity: Entity, mutate: (spec: any) => void): Entity {
   const copy = JSON.parse(JSON.stringify(entity));
@@ -77,6 +117,21 @@ describe('aiContextEntityV1alpha1Validator', () => {
       metadata: { name: 'minimal-skill' },
       spec: { type: 'skill', lifecycle: 'experimental', owner: 'guests' },
     };
+    await expect(validator.check(minimal)).resolves.toBe(true);
+  });
+
+  it('source 付きの外部インポート skill を受理する', async () => {
+    await expect(validator.check(validSkillWithSource)).resolves.toBe(true);
+  });
+
+  it('有効な command エンティティを受理する', async () => {
+    await expect(validator.check(validCommand)).resolves.toBe(true);
+  });
+
+  it('installed 省略や version 省略の最小 source を受理する', async () => {
+    const minimal = withSpec(validSkillWithSource, s => {
+      s.source = { registry: 'kuu-marketplace' };
+    });
     await expect(validator.check(minimal)).resolves.toBe(true);
   });
 
@@ -116,6 +171,19 @@ describe('aiContextEntityV1alpha1Validator', () => {
     [
       'skill: dependsOn が文字列配列でない',
       withSpec(validSkill, s => (s.dependsOn = [{ ref: 'foo' }])),
+    ],
+    [
+      'source を書くなら registry 必須',
+      withSpec(validSkillWithSource, s => delete s.source.registry),
+    ],
+    [
+      'source.installed が boolean でない',
+      withSpec(validSkillWithSource, s => (s.source.installed = 'yes')),
+    ],
+    ['command: invocation 欠落', withSpec(validCommand, s => delete s.invocation)],
+    [
+      'command: invocation が空文字',
+      withSpec(validCommand, s => (s.invocation = '')),
     ],
   ])('%s はエラーになる', async (_name, entity) => {
     await expect(validator.check(entity)).rejects.toThrow();

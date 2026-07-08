@@ -86,7 +86,7 @@ export class AIContextEntitiesProcessor implements CatalogProcessor {
       RELATION_OWNED_BY,
       RELATION_OWNER_OF,
     );
-    if (aiContext.spec.type === 'skill') {
+    if (aiContext.spec.type === 'skill' || aiContext.spec.type === 'command') {
       doEmit(
         aiContext.spec.dependsOn,
         { defaultKind: 'aicontext', defaultNamespace: selfRef.namespace },
